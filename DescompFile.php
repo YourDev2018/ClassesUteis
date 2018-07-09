@@ -7,7 +7,7 @@ class DescompFile
     function __construct(){
 
         $compFile = $_REQUEST['file'];
-        $compFile = 'xmlAnexos.zip';
+        $compFile = 'xml_nfe.zip';
 
         $ext = strtolower(substr($compFile,-4));
 
@@ -23,19 +23,31 @@ class DescompFile
 
         $rar = new RarArchive();
         $files = $rar->open($compFile);
-        print_r($files);
+        if ($files == true) {
+            print 'true';
+            $zip->extractTo('xmlAnexos/');
+            $zip->close();
+         #   print_r( $zip->extract($compFile));
+        }else{
+            print 'false';
+        }
 
     }
 
     function descompactZIP($compFile){
+       // print $path = pathinfo(realpath($compFile), PATHINFO_DIRNAME);
+
         
         $zip = new ZipArchive();
         $files = $zip->open($compFile);
         if ($files == true) {
-        //    $zip->extractTo('http://localhost/yourdev/ClassesUteis/','teste.xml');
-           print_r( $zip->extract($compFile));
+            print 'true';
+            $zip->extractTo('xmlAnexos/');
+            $zip->close();
+         #   print_r( $zip->extract($compFile));
+        }else{
+            print 'false';
         }
-
 
     }
     
