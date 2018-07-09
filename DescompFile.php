@@ -33,7 +33,7 @@ class DescompFile
         }
 
     }
-
+//
     function descompactZIP($compFile){
        // print $path = pathinfo(realpath($compFile), PATHINFO_DIRNAME);
 
