@@ -1,16 +1,39 @@
 <?php
-    
+    new EnviarMailJet();
     class EnviarMailJet 
     {
 
         function __construct(){
 
+      //      echo "Entrou em contrutor";
+
             if ($_GET['send_mail_test'] != null || $_GET['send_mail_test'] != '' ) {
                 $this->sendEmailTeste();
             }
+      //      echo "Base 64: ".$_FILES['base64']['size'];
+     //       echo " To Email: ".$_REQUEST['to_email'];
+     //       print_r(" String base 64: ".$_REQUEST['base64']);
+     //       echo '<img src="data:image/jpeg;base64,' . $_REQUEST['base64'] . '" />';
+            //if($_POST['send_mail_jet_post'] == "send_wdl"){
+
+                $textPart = $_POST['text_part'];
+                $htmlPart = $_POST['html_part'];
+                $contentType = $_POST['content_type'];
+               
+                $textPart = "Teste de envio da logo";
+                $htmlPart = $textPart;
+                $contentType = "image/jpeg";
+
+              ;
+               // echo "Entrou em wdl";
+
+                $this->sendEmailWithAttachments("We Do Logos", "morgado@yourdev.com.br",$_POST['to_email'],$_POST['to_email'], "Seu logo We Do Logos"
+                                        ,$textPart,$htmlPart,$contentType,"Sua logo", str_replace("data:image/jpeg;base64,", "", $_POST['base64']));
+
+           // }
         }
 
-        public function sendEmailWithAttachments($fromName, $fromEmail,$toName,$toEmail, $subject,$textPart,$htmlPart){
+        public function sendEmailWithAttachments($fromName, $fromEmail,$toName,$toEmail, $subject,$textPart,$htmlPart,$contentType,$filename,$base64){
         
             $curl = curl_init();
             $url = "https://api.mailjet.com/v3.1/send";
@@ -43,14 +66,9 @@
                                     \"HTMLPart\": \"$htmlPart\",
                                     \"Attachments\": [
                                     {
-                                            \"ContentType\": \"application/pdf\",
-                                            \"Filename\": \"TermosDeUso.pdf\",
-                                            \"Base64Content\": \"VGVybW9zRGVVc28=\"
-                                    },
-                                    {
-                                            \"ContentType\": \"application/pdf\",
-                                            \"Filename\": \"FCM-Pacote-EarlyStage.pdf\",
-                                            \"Base64Content\": \"RkNNLVBhY290ZS1FYXJseVN0YWdl\"
+                                            \"ContentType\": \"$contentType\",
+                                            \"Filename\": \"SuaLogo.jpeg\",
+                                            \"Base64Content\": \"$base64\"
                                     }
 
                                     ]
@@ -66,7 +84,8 @@
                 ));
 
                 $resposta = curl_exec($curl);
-                print $resposta;
+             //   echo $resposta;
+             //   return $resposta;
 
         }
 
